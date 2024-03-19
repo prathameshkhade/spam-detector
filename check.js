@@ -2,7 +2,6 @@
 
 function checkGoogleSafeBrowser() {
     const url = document.getElementById('url').value;
-    alert(url)
     const API_KEY = "AIzaSyCTB1NKJ4iXUbeTUyw0Czpl-qH_GxJelmk";
     fetch(`https://safebrowsing.googleapis.com/v4/threatning_siteskey=${API_KEY}&url=${url}`)
     .then(Response => Response.json())
