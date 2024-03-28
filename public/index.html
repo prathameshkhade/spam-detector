@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Safe Link Checker</title>
+    <link rel="stylesheet" href="./static/css/style.css" />
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css" />
+    <script type="javascript" src="./static/js/new.js"></script>
+    <script type="javascript" src="./static/js/bootstrap.bundle.js"></script>
+    <script type="javascript" src="./static/js/check.js"></script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="font-weight: 700; font-size: larger">Spam Detector</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item" style="margin-left: 750px">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+    <div class="main" style="margin-top: 150px">
+        <center>
+            <form>
+                <input type="text" name="url" id="url" placeholder="Paste link here" required />
+                <span>
+                    <input
+                        type="submit"
+                        value="Search"
+                        id="checkButton"
+                    />
+                </span>
+            </form>
+
+            <!-- ...existing code... -->
+
+            <script src="check.js"></script>
+            <script>
+                document.getElementById("checkButton").addEventListener("click", checkSSLCertificate);
+            </script>
+        </center>
+    </div>
+
+    <div class="container" id="TAC">
+        Before using this you have to Agree our
+        <a href="T\&C.pdf" target="_blank" onclick="Term()">Terms and condition</a
+      >
+      <form>
+        <label for="checkbx">Agree & Continue</label>
+        <input type="checkbox" name="chk" id="checkbx" />
+      </form>
+    </div>
+    <!-- Footer -->
+    <footer
+      class="page-footer font-small blue pt-4"
+      style="background-color: #007bff; color: white"
+    >
+      <!-- Footer Links -->
+      <div class="container-fluid text-center text-md-left">
+        <!-- Grid row -->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-md-6 mt-md-0 mt-3">
+            <!-- Content -->
+            <h5 class="text-uppercase">About us</h5>
+            <p>
+              Spam developer is developed as Mini project for semester 2 of MCA
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="clearfix w-100 d-md-none pb-3" />
+
+          <!-- Grid column -->
+          <div class="col-md-3 mb-md-0 mb-3">
+            <!-- Links -->
+            <h5 class="text-uppercase">Links</h5>
+
+            <ul class="list-unstyled" style="color: white">
+              <li>
+                <a href="#!">Link 1</a>
+        </li>
+        <li>
+            <a href="#!">Link 2</a>
+        </li>
+        <li>
+            <a href="#!">Link 3</a>
+        </li>
+        <li>
+            <a href="#!">Link 4</a>
+        </li>
+        </ul>
+    </div>
+    <!-- Grid column -->
+
+    <!-- Grid column -->
+    <div class="col-md-3 mb-md-0 mb-3">
+        <!-- Links -->
+        <h5 class="text-uppercase">Links</h5>
+
+        <ul class="list-unstyled">
+            <li>
+                <a href="#!">Link 1</a>
+            </li>
+            <li>
+                <a href="#!">Link 2</a>
+            </li>
+            <li>
+                <a href="#!">Link 3</a>
+            </li>
+            <li>
+                <a href="#!">Link 4</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Grid column -->
+    </div>
+    <!-- Grid row -->
+    </div>
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">
+        © 2024 Copyright:Sudhir
+    </div>
+    <!-- Copyright -->
+    <marquee behavior="this still under development project so the result may be wrong don't trust it unless it fully developed" direction="" style="color: white"></marquee>
+    </footer>
+    <!-- Footer -->
+</body>
+
+</html>
