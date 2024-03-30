@@ -100,22 +100,22 @@ function checkUrlSafety(url) {
 
 // Example usage (assuming you have a route handler in your server.js)
 app.get('/check-url', async (req, res) => {
-  const url = req.query.url; // Get URL from query parameter
-  if (!url) {
-    return res.status(400).send('Missing required parameter: url');
-  }
+ 	 const url = req.query.url; // Get URL from query parameter
+ 	 if (!url) {
+   	 	return res.status(400).send('Missing required parameter: url');
+ 	 }
 
-  try {
-    const response = await checkUrlSafety(url);
-    if (response.safe) {
-      res.send('URL appears to be safe.');
-    } else {
-      res.status(400).send('URL may be unsafe. Matches found: ' + JSON.stringify(response.matches));
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error checking URL safety.');
-  }
+  	try {
+    		const response = await checkUrlSafety(url);
+    		if (response.safe) {
+      			res.send('URL appears to be safe.');
+    		} else {
+     			 res.status(400).send('URL may be unsafe. Matches found: ' + JSON.stringify(response.matches));
+    		}
+  	} catch (error) {
+    		console.error(error);
+    		res.status(500).send('Error checking URL safety.');
+  	}
 });
 
 //--------------------- END OF fun()  ------------------- 
