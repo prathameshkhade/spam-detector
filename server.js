@@ -64,35 +64,38 @@ function checkUrlSafety(url) {
     		},
   	};
 
-  return new Promise((resolve, reject) => {
-    const request = https.request(options, (response) => {
-      let data = '';
-      response.on('data', (chunk) => {
-        data += chunk;
-      });
-      response.on('end', () => {
-        try {
-          const responseObject = JSON.parse(data);
-          if (responseObject.matches && responseObject.matches.length > 0) {
-		  console.log("unsafe");
-            resolve({ safe: false, matches: responseObject.matches }); // URL is unsafe
-          } else {
-		  console.log("safe");
-            resolve({ safe: true }); // URL is likely safe
-          }
-        } catch (error) {
-          reject(error);
-        }
-      });
-    });
+  	return new Promise((resolve, reject) => {
+		const request = https.request(options, (response) => {
+			let data = '';
+			response.on('data', (chunk) => {
+        			data += chunk;
+			});
+        		response.on('end', () => {
+        			try {
+          				const responseObject = JSON.parse(data);
+          				if (responseObject.matches && responseObject.matches.length > 0) {
+		  				console.log("unsafe");
+						//res.status(200).send("safe to browse!");
+            					resolve({ safe: false, matches: responseObject.matches }); // URL is unsafe
+          				} else {
+		  				console.log("safe");
+						//res.status(200).send("unsafe to browse!");
+            					resolve({ safe: true }); // URL is likely safe
+          				}
+        			} 
+				catch (error) {
+          				reject(error);
+       				}
+      			});
+    		});
 
-    request.on('error', (error) => {
-      reject(error);
-    });
+    	request.on('error', (error) => {
+     		reject(error);
+    	});
 
-    request.write(JSON.stringify({ client: { clientId: 'your-application-name' }, threatInfo: { threatTypes: ['MALWARE', 'PHISHING'], platformTypes: ['WINDOWS'], url: url } }));
-    request.end();
-  });
+   	 request.write(JSON.stringify({ client: { clientId: 'your-application-name' }, threatInfo: { threatTypes: ['MALWARE', 'PHISHING'], platformTypes: ['WINDOWS'], url: url } }));
+    	request.end();
+  	});
 }
 
 // Example usage (assuming you have a route handler in your server.js)
