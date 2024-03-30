@@ -62,9 +62,18 @@
 
             <!-- ...existing code... -->
 
-            <script src="check.js"></script>
-            <script>
-                document.getElementById("checkButton").addEventListener("click", checkSSLCertificate);
+	    <script src="check-ssl-date.js"></script>
+	    <script>
+
+		    document.getElementById("checkButton").addEventListener("click", () => {
+			    const url1 = document.getElementById('url').value;
+			    alert(url1)
+			    fetch('/call-fun2?url=' + encodeURIComponent(url1))
+				    .then(response => response.text())
+				    .then(message => alert(message))
+				    .catch(error => alert(error));
+		    });
+
             </script>
         </center>
     </div>
