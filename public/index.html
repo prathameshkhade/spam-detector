@@ -5,11 +5,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Safe Link Checker</title>
+    
+    <!-- style -->
     <link rel="stylesheet" href="./static/css/style.css" />
     <link rel="stylesheet" href="./static/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./static/css/animation.css">       <!-- Animation for chechking -->
+
+    <!-- js -->
     <script type="javascript" src="./static/js/new.js"></script>
     <script type="javascript" src="./static/js/bootstrap.bundle.js"></script>
     <script type="javascript" src="./static/js/check.js"></script>
+    <script type="javascript" src="./static/js/isHttps.js"></script>        <!-- Checking https protocol -->
 
 </head>
 
@@ -49,7 +55,7 @@
     </nav>
     <div class="main" style="margin-top: 150px">
         <center>
-            <form method="POST">
+            <form method="get">
                 <input type="text" name="url" id="url" placeholder="Paste link here" required />
                 <span>
                     <input
@@ -58,19 +64,30 @@
                         id="checkButton"
                     />
                 </span>
+
+                <!-- Result of chechking -->
+                <div id="result1" class="animated-icon">
+                    <h5>Https protocol: </h5>
+                </div>
+                <div id="result2" class="animated-icon">
+                    <h5>Certificate date: </h5>
+                </div>
+                <div id="result3" class="animated-icon">
+                    <h5>Google safe browsing: </h5>
+                </div>
+
             </form>
 
             <!-- ...existing code... -->
 
-	    <script>
+	    <!-- <script>
 
 		    document.getElementById("checkButton").addEventListener("click", async () => {
 			    const url1 = document.getElementById('url').value;
-			    alert(url1);
 			    try {
 				    const res = await fetch('/check-url?url=' + encodeURIComponent(url1));
 				    if(res.ok) {
-					const data = await res.text();
+					    const data = await res.text();
 				    	console.log(data);
 				    	alert(data);
 				    } else {
@@ -78,23 +95,58 @@
 				    }
 				}
 			    catch(error) {
-				    console.log(error.message);
+				    console.error(error);
 			    }
 		    });
 
-            </script>
+            </script> -->
+        
+        <script>
+            const URL = document.getElementById("url").value;
+            alert(URL);
+            console.log(URL)
+
+            let getHomepageData = function() {
+                var getRequest1 = new XMLHttpRequest();
+                var getRequest2 = new XMLHttpRequest();
+
+                getRequest1.onreadystatechange = updateResult1;
+                getRequest1.open("GET", "/ssl-validation?url=" + encodeURIComponent(URL));
+                getRequest1.send();
+
+                getRequest2.onreadystatechange = updateResult2;
+                getRequest2.open("GET", "/google-safe?url=" + encodeURIComponent(URL));
+                getRequest2.send();
+                
+            }
+
+            let updateResult1 = function() {
+                if (getRequest1.readyState === 4 && getRequest1.status === 200) {
+                    document.getElementById("result1").classList.add("tick-icon");
+                    document.getElementById("result1").innerHTML = "&#10004;"; // Tick symbol
+                } else {
+                    document.getElementById("result1").classList.add("cross-icon");
+                    document.getElementById("result1").innerHTML = "&times;"; // Cross symbol
+                }
+            }
+
+            let updateResult2 = function() {
+                if (getRequest2.readyState === 4 && getRequest2.status === 200) {
+                    document.getElementById("result2").classList.add("tick-icon");
+                    document.getElementById("result2").innerHTML = "&#10004;"; // Tick symbol
+                } else {
+                    document.getElementById("result2").classList.add("cross-icon");
+                    document.getElementById("result2").innerHTML = "&times;"; // Cross symbol
+                }
+            }
+
+            document.getElementById("checkButton").addEventListener("click", getHomepageData)
+
+        </script>
+
         </center>
     </div>
 
-    <div class="container" id="TAC">
-        Before using this you have to Agree our
-        <a href="./T&C.pdf" target="_blank" onclick="Term()">Terms and condition</a
-      >
-      <form>
-        <label for="checkbx">Agree & Continue</label>
-        <input type="checkbox" name="chk" id="checkbx" />
-      </form>
-    </div>
     <!-- Footer -->
     <footer
       class="page-footer font-small blue pt-4"

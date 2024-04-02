@@ -22,22 +22,22 @@ function validateSslCertificate(req, res) {
 	}
 
 	https.get(url, (res) => {
-        	const socket = res.socket;
+        const socket = res.socket;
 	
-	      	// Extract certificate information
+	    // Extract certificate information
 		const certificate = socket.getPeerCertificate();
 	
-	      	// Check for certificate validity period
-	      	const currentDate = new Date();
+	    // Check for certificate validity period
+	    const currentDate = new Date();
 		const validFrom = new Date(certificate.validFrom);           
 		const validTo = new Date(certificate.validTo);
 
-	      	if (currentDate < validFrom || currentDate > validTo) {
+		if (currentDate < validFrom || currentDate > validTo) {
 			console.log("noopee!"); 
-			// return false;
+			res.status(200)
 		} 
 		else {
-	        	console.log("yesss!");
+	        console.log("yesss!");
 			//return true;
 		}
 			//.on('error', (error) => {                                      
@@ -71,23 +71,22 @@ function checkUrlSafety(url) {
 			response.on('data', (chunk) => {
         			data += chunk;
 			});
-        		response.on('end', () => {
-        			try {
-          				const responseObject = JSON.parse(data);
-          				if (responseObject.matches && responseObject.matches.length > 0) {
-		  				console.log(url + "\tunsafe");
-						//res.status(200).send("safe to browse!");
-            					resolve({ safe: false, matches: responseObject.matches }); // URL is unsafe
-          				} else {
-		  				console.log(url + "\tsafe");
-						//res.status(200).send("unsafe to browse!");
-            					resolve({ safe: true }); // URL is likely safe
-          				}
-        			} 
-				catch (error) {
-          				reject(error);
-       				}
-      			});
+        	response.on('end', () => {
+        		try {
+					const responseObject = JSON.parse(data);
+          			if (responseObject.matches && responseObject.matches.length > 0) {
+		  				console.log(url, "\tunsafe");
+            			resolve({ safe: false, matches: responseObject.matches }); // URL is unsafe
+          			} 
+					else {
+		  				console.log(url, "\tsafe");
+            			resolve({ safe: true }); // URL is likely safe
+          			}
+        		} 
+			 	catch (error) {
+          			reject(error);
+       			}
+      		});
     		});
 
     	request.on('error', (error) => {
@@ -101,7 +100,7 @@ function checkUrlSafety(url) {
 
 // Example usage (assuming you have a route handler in your server.js)
 app.use(bodyParser.json());
-app.get('/check-url', async (req, res) => {
+app.get('/google-safe', async (req, res) => {
  	 const url = req.query.url; // Get URL from query parameter
  	 if (!url) {
    	 	return res.status(400).send('Missing required parameter: url');
@@ -127,7 +126,7 @@ app.get('/check-url', async (req, res) => {
 //--------------------- END of fun() -------------------------
 
 // Write all the GET request here
-app.get('/call-fun2', validateSslCertificate);
+app.get('/ssl-validation', validateSslCertificate);
 
 
 app.listen(port, () => {

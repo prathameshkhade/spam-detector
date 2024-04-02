@@ -1,0 +1,20 @@
+.animated-icon {
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  .tick-icon {
+    animation-name: show-tick;
+  }
+  .cross-icon {
+    animation-name: show-cross;
+  }
+  @keyframes show-tick {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes show-cross {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  

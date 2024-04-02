@@ -3,8 +3,11 @@ function check_https_protocol() {
 	const url = urlInput.value.trim();
 	const protocol = new URL(url).protocol;	
 	const isHttps = protocol === 'https:';
-	const message = isHttps ? 'The link uses HTTPS protocol.' : 'The link does not use HTTPS protocol.';
-	alert(message);
-	// return false;
+	// const message = isHttps ? 'The link uses HTTPS protocol.' : 'The link does not use HTTPS protocol.';
+	
+	if (isHttps) {
+		return true;
+	}
+	return false;
 }
 

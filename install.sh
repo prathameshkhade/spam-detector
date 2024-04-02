@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install npm
-sudo apt install npm
+sudo apt install -y npm
 
 # Check npm installation exit code
 if [[ $? -eq 0 ]]; then
