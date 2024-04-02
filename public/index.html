@@ -49,11 +49,11 @@
     </nav>
     <div class="main" style="margin-top: 150px">
         <center>
-            <form>
+            <form method="POST">
                 <input type="text" name="url" id="url" placeholder="Paste link here" required />
                 <span>
                     <input
-                        type="submit"
+                        type="button"
                         value="Search"
                         id="checkButton"
                     />
@@ -62,16 +62,24 @@
 
             <!-- ...existing code... -->
 
-	    <script src="check-ssl-date.js"></script>
 	    <script>
 
 		    document.getElementById("checkButton").addEventListener("click", async () => {
 			    const url1 = document.getElementById('url').value;
-			    alert(url1)
-			    fetch('/check-url?url=' + encodeURIComponent(url1))
-				//.then(response => response.text())
-				//.then(message => alert(message))
-				//.catch(error => alert(error));
+			    alert(url1);
+			    try {
+				    const res = await fetch('/check-url?url=' + encodeURIComponent(url1));
+				    if(res.ok) {
+					const data = await res.text();
+				    	console.log(data);
+				    	alert(data);
+				    } else {
+					    alert("cannot fetch url!");
+				    }
+				}
+			    catch(error) {
+				    console.log(error.message);
+			    }
 		    });
 
             </script>

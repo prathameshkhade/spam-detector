@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const https = require('https');
 const tls = require('tls');
+const bodyParser = require('body-parser');
 
 const app = express();
 const port = process.env.PORT || 80;
@@ -74,11 +75,11 @@ function checkUrlSafety(url) {
         			try {
           				const responseObject = JSON.parse(data);
           				if (responseObject.matches && responseObject.matches.length > 0) {
-		  				console.log("unsafe");
+		  				console.log(url + "\tunsafe");
 						//res.status(200).send("safe to browse!");
             					resolve({ safe: false, matches: responseObject.matches }); // URL is unsafe
           				} else {
-		  				console.log("safe");
+		  				console.log(url + "\tsafe");
 						//res.status(200).send("unsafe to browse!");
             					resolve({ safe: true }); // URL is likely safe
           				}
@@ -99,6 +100,7 @@ function checkUrlSafety(url) {
 }
 
 // Example usage (assuming you have a route handler in your server.js)
+app.use(bodyParser.json());
 app.get('/check-url', async (req, res) => {
  	 const url = req.query.url; // Get URL from query parameter
  	 if (!url) {
@@ -107,28 +109,31 @@ app.get('/check-url', async (req, res) => {
 
   	try {
     		const response = await checkUrlSafety(url);
-    		if (response.safe) {
-      			res.send('URL appears to be safe.');
+    		if (response.ok && response.safe) {
+      			return res.status(200).send('URL appears to be safe.');
     		} else {
-     			 res.status(400).send('URL may be unsafe. Matches found: ' + JSON.stringify(response.matches));
+     			return res.status(400).send('URL may be unsafe. Matches found: ' + JSON.stringify(response.matches));
     		}
   	} catch (error) {
     		console.error(error);
-    		res.status(500).send('Error checking URL safety.');
+    		return res.status(500).send('Error checking URL safety.');
   	}
 });
 
-//--------------------- END OF fun()  ------------------- 
+//--------------------- END OF fun()  -------------------
+//
+//------------------------- checking issuer or CA --------------
+
+//--------------------- END of fun() -------------------------
 
 // Write all the GET request here
-app.get('/call-fun1', );
 app.get('/call-fun2', validateSslCertificate);
-// app.get('/call-fun3', checkUrlSafety);
 
 
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}`);
 	console.log(`Visit http://127.0.0.1:${port}`);
-	console.log(`Visit http://localhost:${port}`);
+	console.log(`Visit http://localhost:${port} \n\n`);
+	console.log(`\t\t Link \t\t|\t HTTPS \t|\t Certificate \t|\t Google \t`);
 });
 
