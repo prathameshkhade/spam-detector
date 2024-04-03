@@ -66,81 +66,53 @@
                 </span>
 
                 <!-- Result of chechking -->
-                <div id="result1" class="animated-icon">
-                    <h5>Https protocol: </h5>
+
+
+		<div>
+	              	Https protocol: <span id="result1" class="animated-icon"></span>
+		</div>
+		<div>
+			Certificate date: <span id="result2" class="animated-icon"></span>
                 </div>
-                <div id="result2" class="animated-icon">
-                    <h5>Certificate date: </h5>
-                </div>
-                <div id="result3" class="animated-icon">
-                    <h5>Google safe browsing: </h5>
+		<div>
+			Google safe browsing: <span id="result2" class="animated-icon"></span>
                 </div>
 
             </form>
 
-            <!-- ...existing code... -->
-
-	    <!-- <script>
-
-		    document.getElementById("checkButton").addEventListener("click", async () => {
-			    const url1 = document.getElementById('url').value;
-			    try {
-				    const res = await fetch('/check-url?url=' + encodeURIComponent(url1));
-				    if(res.ok) {
-					    const data = await res.text();
-				    	console.log(data);
-				    	alert(data);
-				    } else {
-					    alert("cannot fetch url!");
-				    }
-				}
-			    catch(error) {
-				    console.error(error);
-			    }
-		    });
-
-            </script> -->
         
         <script>
-            const URL = document.getElementById("url").value;
-            alert(URL);
-            console.log(URL)
 
-            let getHomepageData = function() {
-                var getRequest1 = new XMLHttpRequest();
-                var getRequest2 = new XMLHttpRequest();
+		document.getElementById("checkButton").addEventListener("click", async () => {
+		const url = document.getElementById('url').value;
+		alert(url);
+		console.log(url);
 
-                getRequest1.onreadystatechange = updateResult1;
-                getRequest1.open("GET", "/ssl-validation?url=" + encodeURIComponent(URL));
-                getRequest1.send();
+		try {
+			const [res1, res2] = await Promise.all([
+				fetch('/ssl-validation?url=' + encodeURIComponent(url)),
+				fetch('/google-safe?url=' + encodeURIComponent(url))
+			]);
+		
+			if (res1.ok) {
+				document.getElementById("result1").classList.add("tick-icon");
+				document.getElementById("result1").innerHTML = "&#10004;"; // Tick symbol
+			} else {
+				document.getElementById("result1").classList.add("cross-icon");
+				document.getElementById("result1").innerHTML = "&times;"; // Cross symbol
+			}
 
-                getRequest2.onreadystatechange = updateResult2;
-                getRequest2.open("GET", "/google-safe?url=" + encodeURIComponent(URL));
-                getRequest2.send();
-                
-            }
-
-            let updateResult1 = function() {
-                if (getRequest1.readyState === 4 && getRequest1.status === 200) {
-                    document.getElementById("result1").classList.add("tick-icon");
-                    document.getElementById("result1").innerHTML = "&#10004;"; // Tick symbol
-                } else {
-                    document.getElementById("result1").classList.add("cross-icon");
-                    document.getElementById("result1").innerHTML = "&times;"; // Cross symbol
-                }
-            }
-
-            let updateResult2 = function() {
-                if (getRequest2.readyState === 4 && getRequest2.status === 200) {
-                    document.getElementById("result2").classList.add("tick-icon");
-                    document.getElementById("result2").innerHTML = "&#10004;"; // Tick symbol
-                } else {
-                    document.getElementById("result2").classList.add("cross-icon");
-                    document.getElementById("result2").innerHTML = "&times;"; // Cross symbol
-                }
-            }
-
-            document.getElementById("checkButton").addEventListener("click", getHomepageData)
+			if (res2.ok) {
+				document.getElementById("result2").classList.add("tick-icon");
+				document.getElementById("result2").innerHTML = "&#10004;"; // Tick symbol
+			} else {
+				document.getElementById("result2").classList.add("cross-icon");
+				document.getElementById("result2").innerHTML = "&times;"; // Cross symbol
+			}
+		} catch (error) {
+			console.error(error);
+		}
+		});
 
         </script>
 

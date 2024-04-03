@@ -12,36 +12,34 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //---------------- check ssl certificate validity --------------------
 
-function validateSslCertificate(req, res) {
+function validateSslCertificate(URL) {
 
-	const url = req.query.url;
-	console.log(url);
+	//const url = req.query.url;
+	//console.log(url);
 
-	if(!url) {
-		return res.status(400).send("Missing required paramaeter: url");
-	}
+	//if(!url) {
+	//	return res.status(400).send("Missing required paramaeter: url");
+	//}
 
-	https.get(url, (res) => {
-        const socket = res.socket;
+	https.get(URL, (res) => {
+        	const socket = res.socket;
 	
 	    // Extract certificate information
 		const certificate = socket.getPeerCertificate();
 	
 	    // Check for certificate validity period
-	    const currentDate = new Date();
+	   	 const currentDate = new Date();
 		const validFrom = new Date(certificate.validFrom);           
 		const validTo = new Date(certificate.validTo);
 
 		if (currentDate < validFrom || currentDate > validTo) {
-			console.log("noopee!"); 
-			res.status(200)
+			console.log("unsafe", res.statusCode); 
+			return false;
 		} 
 		else {
-	        console.log("yesss!");
-			//return true;
+	        	console.log("safe", res.statusCode);
+			return true;
 		}
-			//.on('error', (error) => {                                      
-		//	    reject(new Error(`Error during SSL check: ${error.message}`));
 	});
 }
 
@@ -126,13 +124,26 @@ app.get('/google-safe', async (req, res) => {
 //--------------------- END of fun() -------------------------
 
 // Write all the GET request here
-app.get('/ssl-validation', validateSslCertificate);
+app.get('/ssl-validation', (req, res) => {
+
+	const url = req.query.url; // Get URL from query parameter
+         if (!url) {
+                return res.status(400).send('Missing required parameter: url');
+         }
+
+	if(validateSslCertificate(url)) {
+		return res.status(200).send();
+	}
+	else {
+		return res.status(503).send();
+	}
+});
 
 
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}`);
 	console.log(`Visit http://127.0.0.1:${port}`);
-	console.log(`Visit http://localhost:${port} \n\n`);
+	console.log(`Visit http://localhost:${port }\n`);
 	console.log(`\t\t Link \t\t|\t HTTPS \t|\t Certificate \t|\t Google \t`);
 });
 
