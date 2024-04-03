@@ -101,7 +101,7 @@ app.get('/google-safe', async (req, res) => {
 
   	try {
     		const response = await checkUrlSafety(url);
-    		if (response.ok && response.safe) {
+    		if (response.safe) {
       			return res.status(200).send('URL appears to be safe.');
     		} else {
      			return res.status(400).send('URL may be unsafe. Matches found: ' + JSON.stringify(response.matches));
