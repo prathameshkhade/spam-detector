@@ -14,33 +14,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 function validateSslCertificate(URL) {
 
-	//const url = req.query.url;
-	//console.log(url);
+	return new Promise((resolve, reject) => {
+		https.get(URL, (res) => {
+				const socket = res.socket;
+		
+			// Extract certificate information
+			const certificate = socket.getPeerCertificate();
+		
+			// Check for certificate validity period
+			const currentDate = new Date();
+			const validFrom = new Date(certificate.validFrom);           
+			const validTo = new Date(certificate.validTo);
 
-	//if(!url) {
-	//	return res.status(400).send("Missing required paramaeter: url");
-	//}
-
-	https.get(URL, (res) => {
-        	const socket = res.socket;
-	
-	    // Extract certificate information
-		const certificate = socket.getPeerCertificate();
-	
-	    // Check for certificate validity period
-	   	 const currentDate = new Date();
-		const validFrom = new Date(certificate.validFrom);           
-		const validTo = new Date(certificate.validTo);
-
-		if (currentDate < validFrom || currentDate > validTo) {
-			console.log("unsafe", res.statusCode); 
-			return false;
-		} 
-		else {
-	        	console.log("safe", res.statusCode);
-			return true;
-		}
-	});
+			if (currentDate < validFrom || currentDate > validTo) {
+				console.log(URL, "unsafe", res.statusCode); 
+				resolve(false);
+			} 
+			else {
+				console.log(URL, "safe", res.statusCode);
+				resolve(true);
+			}
+		});
+	})
 }
 
 // -------------------------- END OF fun()  --------------------------
@@ -124,18 +119,20 @@ app.get('/google-safe', async (req, res) => {
 //--------------------- END of fun() -------------------------
 
 // Write all the GET request here
-app.get('/ssl-validation', (req, res) => {
+app.get('/ssl-validation', async (req, res) => {
 
 	const url = req.query.url; // Get URL from query parameter
-         if (!url) {
-                return res.status(400).send('Missing required parameter: url');
-         }
+    if (!url) {
+        return res.status(400).send('Missing required parameter: url');
+    }
 
-	if(validateSslCertificate(url)) {
-		return res.status(200).send();
+	const isValid = await validateSslCertificate(url);
+
+	if(isValid) {
+		return res.status(200).send("valid date!");
 	}
 	else {
-		return res.status(503).send();
+		return res.status(503).send("invalid date!");
 	}
 });
 

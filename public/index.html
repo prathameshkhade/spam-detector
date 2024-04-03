@@ -69,10 +69,10 @@
 
 
 		<div>
-	              	Https protocol: <span id="result1" class="animated-icon"></span>
+	        Https protocol: <span id="result0" class="animated-icon"></span>
 		</div>
 		<div>
-			Certificate date: <span id="result2" class="animated-icon"></span>
+			Certificate date: <span id="result1" class="animated-icon"></span>
                 </div>
 		<div>
 			Google safe browsing: <span id="result2" class="animated-icon"></span>
@@ -94,18 +94,22 @@
 				fetch('/google-safe?url=' + encodeURIComponent(url))
 			]);
 		
-			if (res1.ok) {
+			if (res1.status === 200) {
+                alert(res1.status, res1.statusText)
 				document.getElementById("result1").classList.add("tick-icon");
 				document.getElementById("result1").innerHTML = "&#10004;"; // Tick symbol
 			} else {
+                alert(res1.status, res1.statusText)
 				document.getElementById("result1").classList.add("cross-icon");
 				document.getElementById("result1").innerHTML = "&times;"; // Cross symbol
 			}
 
-			if (res2.ok) {
+			if (res2.status === 200) {
+                alert(res2.status, res2.statusText)
 				document.getElementById("result2").classList.add("tick-icon");
 				document.getElementById("result2").innerHTML = "&#10004;"; // Tick symbol
 			} else {
+                alert(res2.status, res2.statusText)
 				document.getElementById("result2").classList.add("cross-icon");
 				document.getElementById("result2").innerHTML = "&times;"; // Cross symbol
 			}
