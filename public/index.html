@@ -80,7 +80,8 @@
 
             </form>
 
-        
+	    <script src="./static/js/isHttps.js"> </script>
+
         <script>
 
 		document.getElementById("checkButton").addEventListener("click", async () => {
@@ -89,6 +90,16 @@
 		console.log(url);
 
 		try {
+			const usingHttps = await check_https_protocol(url);
+                    	if(usingHttps) {                                                                            
+				document.getElementById("result0").classList.add("tick-icon");
+				document.getElementById("result0").innerHTML = "&#10004;"; // Tick symbol
+			}
+			else {
+				document.getElementById("result0").classList.add("cross-icon");                      
+				document.getElementById("result0").innerHTML = "&times;"; // Cross symbol
+                    	}
+
 			const [res1, res2] = await Promise.all([
 				fetch('/ssl-validation?url=' + encodeURIComponent(url)),
 				fetch('/google-safe?url=' + encodeURIComponent(url))

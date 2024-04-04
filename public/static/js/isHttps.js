@@ -1,13 +1,22 @@
-function check_https_protocol() {
-	const urlInput = document.getElementById('url');
-	const url = urlInput.value.trim();
-	const protocol = new URL(url).protocol;	
-	const isHttps = protocol === 'https:';
-	// const message = isHttps ? 'The link uses HTTPS protocol.' : 'The link does not use HTTPS protocol.';
-	
-	if (isHttps) {
-		return true;
+function check_https_protocol(urlInput) {
+    const url = urlInput.trim();
+
+	if (!url) {
+		return false;
 	}
-	return false;
+
+	try {
+        	const protocol = new URL(url).protocol;
+	        const isHttps = protocol.toLowerCase() === 'https:'; // Check with lowercase
+        	if (isHttps) {
+			return true;
+		}
+		return false;
+	} catch (error) {
+		console.error(error);
+	}
 }
+
+// Example for testing tge function
+console.log(check_https_protocol("https://google.com"));
 
